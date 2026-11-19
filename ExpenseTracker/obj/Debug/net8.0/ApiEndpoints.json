@@ -1,0 +1,48 @@
+[
+  {
+    "ContainingType": "ExpenseTracker.Controllers.TransactionsController",
+    "Method": "GetAll",
+    "RelativePath": "api/Controller",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "ExpenseTracker.Models.Transactions",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ExpenseTracker.Controllers.TransactionsController",
+    "Method": "Create",
+    "RelativePath": "api/Controller",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newTransactions",
+        "Type": "ExpenseTracker.Models.Transactions",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ExpenseTracker.Models.Transactions",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  }
+]
