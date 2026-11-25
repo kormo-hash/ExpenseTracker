@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Controller": {
+    "/api/Transactions": {
       "get": {
         "tags": [
           "Transactions"
@@ -16,17 +16,26 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Transactions"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transactions"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Transactions"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transactions"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Transactions"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transactions"
+                  }
                 }
               }
             }
@@ -79,14 +88,35 @@
           }
         }
       }
+    },
+    "/api/Transactions/{id}": {
+      "delete": {
+        "tags": [
+          "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "Transactions": {
         "required": [
-          "category",
-          "description",
           "type"
         ],
         "type": "object",
@@ -95,20 +125,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "description": {
-            "maxLength": 120,
-            "minLength": 0,
-            "type": "string"
-          },
           "totalPrice": {
             "maximum": 100000000,
             "minimum": 0.01,
             "type": "number",
             "format": "double"
-          },
-          "category": {
-            "minLength": 1,
-            "type": "string"
           },
           "type": {
             "minLength": 1,
@@ -117,6 +138,10 @@
           "date": {
             "type": "string",
             "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

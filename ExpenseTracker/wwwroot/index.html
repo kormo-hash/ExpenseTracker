@@ -1,10 +1,70 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Starter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.9/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <div class="container">
+        <div class="header_div">
+            <h1> <i class="bi bi-cash"></i> Expense Tracker</h1>
+        </div>
+        <div class="add_expense">
+            <div class="expense_inputs">
+                <label>Name</label>
+                <input id="expense_name" />
+            </div>
+            <div class="expense_inputs">
+                <label>Price</label>
+                <input id="expense_price" />
+            </div>
 
+            <div class="expense_inputs">
+                <label>Type</label>
+                <select name="type" id="expense_type">
+                    <option></option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+            <div class="expense_inputs">
+                <label>Date</label>
+                <input id="expense_date" type="date" />
+            </div>
+        </div>
+        <div class="add_btn">
+            <button>Add expense</button>
+        </div>
+
+        <section>
+            <div class="list-header">
+                <h2>Transacitons</h2>
+            </div>
+            <hr />
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions_list">
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.9/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

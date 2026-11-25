@@ -1,0 +1,4 @@
+wwwroot\index.html
+wwwroot\main.js
+wwwroot\style.css
+wwwroot\images\backgroundimage.png

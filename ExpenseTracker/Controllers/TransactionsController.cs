@@ -1,39 +1,72 @@
-﻿using ExpenseTracker.Models;
+﻿using ExpenseTracker.Data;
+using ExpenseTracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Controllers
 {
-    [Controller]
-    [Route("api/Controller")]
-    public class TransactionsController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TransactionsController : ControllerBase
     {
-        private static readonly List<Transactions> Transactions = new();
-        private static int _transactionsCount;
+        private readonly ExpenseTrackerContext _context;
+
+        public TransactionsController(ExpenseTrackerContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
-        public ActionResult<Transactions> GetAll()
+        public async Task<ActionResult<IEnumerable<Transactions>>> GetAll()
         {
-            return Ok(Transactions);
+            var items = await _context.Transactions
+                .OrderByDescending(t => t.Date)
+                .ThenByDescending(t => t.Id)
+                .ToListAsync();
+
+            return Ok(items);
         }
 
         [HttpPost]
-        public ActionResult<Transactions> Create([FromBody] Transactions newTransactions)
+        public async Task<ActionResult<Transactions>> Create([FromBody] Transactions newTransaction)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var normalizedType = newTransactions.Type.Trim().ToLowerInvariant();
-            if (normalizedType is not ("income" or "expense"))
-                {
-                    return BadRequest(new {message = "The type can be only 'income' or 'expense'"});
-                }
-            newTransactions.Id = _transactionsCount++;
-            newTransactions.Type = normalizedType;
-            newTransactions.Date = DateTime.Now;
 
-            Transactions.Add(newTransactions);
-            return CreatedAtAction(nameof(GetAll), new { id = newTransactions.Id }, newTransactions);
+            var normalizedType = newTransaction.Type.Trim().ToLowerInvariant();
+            if (normalizedType is not ("income" or "expense"))
+            {
+                return BadRequest(new { message = "The type can be only 'income' or 'expense'" });
+            }
+
+            newTransaction.Id = 0;
+            newTransaction.Name = newTransaction.Name.Trim();
+            newTransaction.Type = normalizedType;
+            if (newTransaction.Date == default)
+            {
+                newTransaction.Date = DateTime.Now;
+            }
+
+            _context.Transactions.Add(newTransaction);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetAll), new { id = newTransaction.Id }, newTransaction);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deletable = await _context.Transactions.FindAsync(id);
+            if (deletable is null)
+            {
+                return NotFound(new { message = $"Cant find the transaction with the {id} identifier" });
+            }
+
+            _context.Transactions.Remove(deletable);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
